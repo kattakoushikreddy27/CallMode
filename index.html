@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CallMode — by Katta Koushik Reddy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;600;700&display=swap');
+
+/* Apple uses SF Pro — we use the closest Google Font match and system stack */
+:root {
+  --white: #ffffff;
+  --black: #1d1d1f;
+  --gray1: #f5f5f7;
+  --gray2: #e8e8ed;
+  --gray3: #d2d2d7;
+  --gray4: #86868b;
+  --gray5: #6e6e73;
+  --blue: #0071e3;
+  --blue-light: #2997ff;
+  --bg: #ffffff;
+  --font: -apple-system, 'SF Pro Display', 'SF Pro Text', BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 200;
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem;
+}
+.nav-logo {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--black);
+  letter-spacing: -0.02em;
+}
+.nav-right {
+  display: flex; align-items: center; gap: 2rem;
+}
+.nav-link {
+  font-size: 0.78rem;
+  color: var(--gray5);
+  text-decoration: none;
+  letter-spacing: 0;
+  transition: color .2s;
+}
+.nav-link:hover { color: var(--black); }
+.nav-cta {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--blue);
+  text-decoration: none;
+  background: rgba(0,113,227,0.08);
+  padding: 0.35rem 0.9rem;
+  border-radius: 980px;
+  transition: background .2s;
+}
+.nav-cta:hover { background: rgba(0,113,227,0.15); }
+
+/* ── SECTIONS ── */
+section {
+  padding: 120px 2rem 100px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding-top: 100px;
+}
+.hero-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  animation: rise 0.9s 0.1s cubic-bezier(.16,1,.3,1) forwards;
+}
+h1 {
+  font-size: clamp(3.5rem, 10vw, 7.5rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.0;
+  color: var(--black);
+  opacity: 0;
+  animation: rise 0.9s 0.2s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-tagline {
+  margin-top: 1.5rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 300;
+  color: var(--gray5);
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  max-width: 560px;
+  opacity: 0;
+  animation: rise 0.9s 0.35s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-actions {
+  display: flex; gap: 1rem; align-items: center;
+  margin-top: 2.5rem;
+  opacity: 0;
+  animation: rise 0.9s 0.5s cubic-bezier(.16,1,.3,1) forwards;
+}
+.btn-primary {
+  background: var(--blue);
+  color: white;
+  padding: 0.75rem 1.8rem;
+  border-radius: 980px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background .2s, transform .2s;
+  letter-spacing: -0.01em;
+}
+.btn-primary:hover { background: #0077ed; transform: scale(1.02); }
+.btn-secondary {
+  color: var(--blue);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  display: flex; align-items: center; gap: 0.3rem;
+  transition: gap .2s;
+}
+.btn-secondary:hover { gap: 0.5rem; }
+.btn-secondary::after { content: '›'; font-size: 1.1rem; }
+
+/* phone mockup */
+.phone-mockup {
+  margin-top: 5rem;
+  width: 200px;
+  background: var(--black);
+  border-radius: 44px;
+  padding: 14px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.12) inset,
+    0 40px 80px rgba(0,0,0,0.18),
+    0 8px 20px rgba(0,0,0,0.1);
+  opacity: 0;
+  animation: rise 1s 0.65s cubic-bezier(.16,1,.3,1) forwards;
+}
+.phone-screen {
+  background: #1c1c1e;
+  border-radius: 32px;
+  padding: 2rem 1.2rem 1.5rem;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 0.8rem;
+  min-height: 320px;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.phone-screen::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 90px; height: 26px;
+  background: var(--black);
+  border-radius: 0 0 18px 18px;
+}
+.phone-app-icon {
+  width: 60px; height: 60px;
+  background: linear-gradient(145deg, #2d2d2f, #1a1a1c);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.phone-app-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.01em;
+}
+.phone-status {
+  font-size: 0.65rem;
+  color: #30d158;
+  font-weight: 500;
+  background: rgba(48,209,88,0.12);
+  padding: 0.3rem 0.8rem;
+  border-radius: 100px;
+}
+.phone-incoming {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 0.8rem 1rem;
+  margin-top: 0.5rem;
+  display: flex; flex-direction: column; gap: 0.3rem;
+}
+.phone-incoming .caller { font-size: 0.65rem; color: #aeaeb2; }
+.phone-incoming .action { font-size: 0.6rem; color: #636366; font-style: italic; }
+
+/* ── DIVIDERS ── */
+.section-divider {
+  max-width: 980px;
+  margin: 0 auto;
+  height: 1px;
+  background: var(--gray2);
+}
+
+/* ── EYEBROW ── */
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+/* ── SECTION TITLES ── */
+h2.section-title {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: var(--black);
+  margin-bottom: 1rem;
+}
+h2.section-title .light { font-weight: 300; color: var(--gray4); }
+
+.section-body {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--gray5);
+  line-height: 1.7;
+  max-width: 600px;
+  letter-spacing: -0.01em;
+}
+
+/* ── PROBLEM ── */
+#problem { background: var(--gray1); }
+.problem-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--gray2);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-top: 3rem;
+}
+@media(max-width: 640px) { .problem-cards { grid-template-columns: 1fr; } }
+.prob-card {
+  background: var(--gray1);
+  padding: 2.5rem 2rem;
+  transition: background .2s;
+}
+.prob-card:hover { background: var(--white); }
+.prob-num {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--gray3);
+  letter-spacing: 0.08em;
+  margin-bottom: 1.2rem;
+}
+.prob-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.6rem;
+  color: var(--black);
+}
+.prob-card p {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--gray5);
+  line-height: 1.6;
+}
+
+/* quote */
+.quote-block {
+  margin-top: 3rem;
+  padding: 2.5rem 2.5rem;
+  border-left: 3px solid var(--blue);
+  background: white;
+  border-radius: 0 14px 14px 0;
+}
+.quote-text {
+  font-size: 1.3rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--black);
+  line-height: 1.6;
+  font-style: italic;
+}
+.quote-attr {
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  color: var(--gray4);
+  font-weight: 500;
+}
+
+/* ── SOLUTION ── */
+.solution-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  margin-top: 4rem;
+}
+@media(max-width: 640px) { .solution-feature { grid-template-columns: 1fr; gap: 2rem; } }
+.solution-feature.flip { direction: rtl; }
+.solution-feature.flip > * { direction: ltr; }
+.feat-visual {
+  background: var(--gray1);
+  border-radius: 22px;
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 5rem;
+}
+.feat-content h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.8rem;
+  line-height: 1.15;
+}
+.feat-content p {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--gray5);
+  line-height: 1.7;
+}
+
+/* ── MODES ── */
+#modes { background: var(--black); color: white; }
+#modes .section-title { color: white; }
+#modes .section-title .light { color: #86868b; }
+#modes .section-body { color: #86868b; }
+.modes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+@media(max-width:640px) { .modes-grid { grid-template-columns: 1fr; } }
+.mode-tile {
+  background: #1d1d1f;
+  border: 1px solid #2d2d2f;
+  border-radius: 18px;
+  padding: 2.2rem 1.8rem;
+  transition: border-color .3s, transform .3s;
+  cursor: default;
+}
+.mode-tile:hover { border-color: #424245; transform: translateY(-4px); }
+.mode-emoji { font-size: 2.5rem; margin-bottom: 1.2rem; display: block; }
+.mode-tile h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.8rem;
+}
+.mode-sms {
+  font-size: 0.78rem;
+  color: #636366;
+  line-height: 1.5;
+  font-style: italic;
+  padding: 0.7rem 0.9rem;
+  background: #111;
+  border-radius: 10px;
+  border: 1px solid #2d2d2f;
+}
+.mode-sms::before { content: 'Auto SMS: '; color: #48a8f7; font-style: normal; font-weight: 500; }
+
+/* ── LOGIC ── */
+.logic-flow {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 640px;
+}
+.logic-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--gray2);
+}
+.logic-step:last-child { border-bottom: none; }
+.step-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--black);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.step-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.3rem;
+}
+.step-content p {
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--gray5);
+  line-height: 1.6;
+}
+.logic-branch {
+  margin-left: 2.8rem;
+  padding: 0.7rem 1rem;
+  background: var(--gray1);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--gray5);
+  border-left: 2px solid var(--gray3);
+  margin-bottom: 0.5rem;
+}
+.logic-branch.urgent { border-left-color: #30d158; color: #1d7a38; background: #f1faf4; }
+.logic-branch.silent { border-left-color: var(--blue); color: #0055ab; background: #f0f6ff; }
+
+/* urgency window */
+.urgency-callout {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  padding: 2rem;
+  background: var(--gray1);
+  border-radius: 18px;
+  max-width: 640px;
+}
+.urgency-num {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--black);
+  line-height: 1;
+}
+.urgency-num span { font-size: 1rem; font-weight: 300; color: var(--gray4); display: block; margin-top: 0.2rem; }
+.urgency-desc h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.02em;
+}
+.urgency-desc p { font-size: 0.88rem; font-weight: 300; color: var(--gray5); line-height: 1.6; }
+
+/* ── TECH ── */
+#tech { background: var(--gray1); }
+.tech-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--gray2);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-top: 3rem;
+}
+@media(max-width:640px) { .tech-list { grid-template-columns: 1fr; } }
+.tech-item {
+  background: var(--gray1);
+  padding: 1.8rem;
+  transition: background .2s;
+}
+.tech-item:hover { background: white; }
+.tech-icon { font-size: 1.5rem; margin-bottom: 0.8rem; display: block; }
+.tech-item h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; letter-spacing: -0.01em; }
+.tech-item p { font-size: 0.8rem; font-weight: 300; color: var(--gray5); line-height: 1.5; }
+
+/* ── IMPACT ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-top: 3rem;
+  border: 1px solid var(--gray2);
+  border-radius: 18px;
+  overflow: hidden;
+}
+@media(max-width:640px) { .stats-row { grid-template-columns: 1fr 1fr; } }
+.stat-box {
+  padding: 2rem 1.5rem;
+  border-right: 1px solid var(--gray2);
+  text-align: center;
+  transition: background .2s;
+}
+.stat-box:last-child { border-right: none; }
+.stat-box:hover { background: var(--gray1); }
+.stat-num {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--black);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--gray4);
+  margin-top: 0.4rem;
+  line-height: 1.3;
+}
+
+.user-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  max-width: 640px;
+}
+@media(max-width:480px) { .user-list { grid-template-columns: 1fr; } }
+.user-item {
+  display: flex; align-items: center; gap: 0.9rem;
+  padding: 1rem 1.2rem;
+  background: var(--gray1);
+  border-radius: 12px;
+}
+.user-item .ui { font-size: 1.3rem; }
+.user-item span { font-size: 0.88rem; font-weight: 400; color: var(--gray5); }
+
+/* ── CONCLUSION ── */
+#conclusion {
+  background: var(--black);
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  padding: 120px 2rem;
+}
+#conclusion .inner { max-width: 700px; }
+#conclusion .eyebrow { color: #636366; }
+#conclusion h2 {
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  color: white;
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+}
+#conclusion .light { color: #86868b; font-weight: 300; }
+#conclusion .lead {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: #86868b;
+  line-height: 1.7;
+  margin-bottom: 3rem;
+  letter-spacing: -0.01em;
+}
+
+/* quote by steve */
+.steve-quote {
+  margin: 3rem auto;
+  max-width: 560px;
+  padding: 0 1rem;
+}
+.steve-quote p {
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: white;
+  letter-spacing: -0.02em;
+  line-height: 1.55;
+  font-style: italic;
+}
+.steve-quote cite {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #636366;
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* contact card */
+.contact-card {
+  margin-top: 4rem;
+  background: #1d1d1f;
+  border: 1px solid #2d2d2f;
+  border-radius: 22px;
+  padding: 3rem;
+  max-width: 560px;
+  width: 100%;
+  text-align: left;
+}
+.contact-card .made-by {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #636366;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.contact-card h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+}
+.contact-card .tagline {
+  font-size: 0.9rem;
+  color: #636366;
+  font-weight: 300;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+.contact-links {
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.contact-row {
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 0.8rem 1rem;
+  background: #111;
+  border-radius: 10px;
+  border: 1px solid #2d2d2f;
+  text-decoration: none;
+  transition: border-color .2s, background .2s;
+}
+.contact-row:hover { border-color: #424245; background: #1a1a1c; }
+.contact-icon { font-size: 1rem; width: 20px; text-align: center; }
+.contact-info { display: flex; flex-direction: column; }
+.contact-label { font-size: 0.68rem; color: #636366; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+.contact-value { font-size: 0.85rem; color: white; font-weight: 400; }
+.own-note {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #2d2d2f;
+  font-size: 0.72rem;
+  color: #636366;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(.16,1,.3,1), transform 0.7s cubic-bezier(.16,1,.3,1);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* stagger children */
+.stagger > *:nth-child(1) { transition-delay: 0s; }
+.stagger > *:nth-child(2) { transition-delay: 0.07s; }
+.stagger > *:nth-child(3) { transition-delay: 0.14s; }
+.stagger > *:nth-child(4) { transition-delay: 0.21s; }
+.stagger > *:nth-child(5) { transition-delay: 0.28s; }
+.stagger > *:nth-child(6) { transition-delay: 0.35s; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">CallMode</div>
+  <div class="nav-right">
+    <a href="#problem" class="nav-link">Problem</a>
+    <a href="#solution" class="nav-link">Solution</a>
+    <a href="#modes" class="nav-link">Modes</a>
+    <a href="#conclusion" class="nav-cta">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-eyebrow">Android · Productivity · 2026</div>
+  <h1>CallMode</h1>
+  <p class="hero-tagline">Intelligent call management. Silence what can wait. Never miss what matters.</p>
+  <div class="hero-actions">
+    <a href="#problem" class="btn-primary">See the idea</a>
+    <a href="#conclusion" class="btn-secondary">Get in touch</a>
+  </div>
+  <div class="phone-mockup">
+    <div class="phone-screen">
+      <div class="phone-app-icon">📵</div>
+      <div class="phone-app-name">CallMode</div>
+      <div class="phone-status">Focus Mode · Active</div>
+      <div class="phone-incoming">
+        <div class="caller">Incoming: +91 98765 43210</div>
+        <div class="action">Auto-SMS sent. Silenced.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="eyebrow reveal">The Problem</div>
+  <h2 class="section-title reveal">Your phone doesn't<br><span class="light">know when to stop.</span></h2>
+  <p class="section-body reveal">Smartphones give you two options: silence everything or let everything through. Neither respects you, your focus, or your time.</p>
+
+  <div class="quote-block reveal">
+    <p class="quote-text">"I want to focus, rest, or drive safely — but I cannot afford to miss something important."</p>
+    <p class="quote-attr">— The dilemma every smartphone user faces</p>
+  </div>
+
+  <div class="problem-cards stagger reveal">
+    <div class="prob-card">
+      <div class="prob-num">01</div>
+      <h3>Binary Control Only</h3>
+      <p>Allow all calls or silence all calls. No intelligence. No context. No nuance.</p>
+    </div>
+    <div class="prob-card">
+      <div class="prob-num">02</div>
+      <h3>Callers Left Guessing</h3>
+      <p>When you're sleeping or driving, callers have no idea. So they keep calling. Repeatedly.</p>
+    </div>
+    <div class="prob-card">
+      <div class="prob-num">03</div>
+      <h3>No Urgency Detection</h3>
+      <p>Do Not Disturb treats a spam call and an emergency exactly the same way.</p>
+    </div>
+    <div class="prob-card">
+      <div class="prob-num">04</div>
+      <h3>Broken Productivity</h3>
+      <p>Constant interruptions shatter focus cycles, cost you time, and increase stress.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SOLUTION -->
+<section id="solution">
+  <div class="eyebrow reveal">The Solution</div>
+  <h2 class="section-title reveal">Three ideas.<br><span class="light">One elegant system.</span></h2>
+  <p class="section-body reveal">CallMode is built on a simple philosophy: protect your focus, keep callers informed, and never block what's truly urgent.</p>
+
+  <div class="solution-feature reveal">
+    <div class="feat-visual">💬</div>
+    <div class="feat-content">
+      <h3>Automatic Context Messages</h3>
+      <p>The moment a call comes in while you're in a mode, CallMode sends a personalized SMS explaining your situation. No missed communication. No confusion.</p>
+    </div>
+  </div>
+
+  <div class="solution-feature flip reveal">
+    <div class="feat-visual">🔇</div>
+    <div class="feat-content">
+      <h3>Intelligent Silence</h3>
+      <p>Calls are silenced automatically. No toggling. No forgetting to turn DND back on. The system is always aware of your context.</p>
+    </div>
+  </div>
+
+  <div class="solution-feature reveal">
+    <div class="feat-visual">🚨</div>
+    <div class="feat-content">
+      <h3>Urgency Override</h3>
+      <p>If someone calls twice in 5 minutes, CallMode recognizes the urgency and lets the call ring normally. Because some things truly cannot wait.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- MODES -->
+<section id="modes">
+  <div class="eyebrow reveal">Context Modes</div>
+  <h2 class="section-title reveal">You choose the context.<br><span class="light">CallMode does the rest.</span></h2>
+  <p class="section-body reveal">Three modes. Each activates a different auto-response so callers always understand your situation.</p>
+
+  <div class="modes-grid stagger reveal">
+    <div class="mode-tile">
+      <span class="mode-emoji">😴</span>
+      <h3>Sleep</h3>
+      <div class="mode-sms">"I am currently resting. Please call back in 1 hour."</div>
+    </div>
+    <div class="mode-tile">
+      <span class="mode-emoji">🚗</span>
+      <h3>Driving</h3>
+      <div class="mode-sms">"I am driving. If urgent, please call again."</div>
+    </div>
+    <div class="mode-tile">
+      <span class="mode-emoji">🎯</span>
+      <h3>Focus</h3>
+      <div class="mode-sms">"I am in focus mode. Please leave a message."</div>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px; background:#2d2d2f;"></div>
+
+<!-- LOGIC -->
+<section id="logic" style="background: #000; color: white;">
+  <div class="eyebrow reveal" style="color:#636366;">The Logic</div>
+  <h2 class="section-title reveal" style="color:white;">How it thinks.<br><span style="color:#86868b; font-weight:300;">Step by step.</span></h2>
+
+  <div class="logic-flow stagger reveal">
+    <div class="logic-step">
+      <div class="step-num" style="background:#2d2d2f;">1</div>
+      <div class="step-content">
+        <h4 style="color:white;">Incoming call detected</h4>
+        <p style="color:#636366;">TelephonyManager fires RINGING state. BroadcastReceiver intercepts.</p>
+      </div>
+    </div>
+    <div class="logic-step">
+      <div class="step-num" style="background:#2d2d2f;">2</div>
+      <div class="step-content">
+        <h4 style="color:white;">Mode check</h4>
+        <p style="color:#636366;">Is a context mode active in SharedPreferences?</p>
+      </div>
+    </div>
+    <div class="logic-branch" style="background:#111; color:#636366; border-left-color:#2d2d2f;">No active mode → Default phone behavior</div>
+    <div class="logic-step">
+      <div class="step-num" style="background:#2d2d2f;">3</div>
+      <div class="step-content">
+        <h4 style="color:white;">Repeat call check</h4>
+        <p style="color:#636366;">Has this number called within the last 5 minutes?</p>
+      </div>
+    </div>
+    <div class="logic-branch" style="background:#0d2818; color:#30d158; border-left-color:#30d158;">2+ calls in 5 min → Urgent. Allow normal ring.</div>
+    <div class="logic-step">
+      <div class="step-num" style="background:#2d2d2f;">4</div>
+      <div class="step-content">
+        <h4 style="color:white;">Silence + Auto-SMS</h4>
+        <p style="color:#636366;">Ringtone silenced. Contextual SMS sent via SmsManager.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="urgency-callout reveal" style="background:#1d1d1f; margin-top:2.5rem; max-width:640px;">
+    <div class="urgency-num" style="color:white;">5<span style="color:#636366;">minutes</span></div>
+    <div class="urgency-desc">
+      <h4 style="color:white;">The urgency window</h4>
+      <p style="color:#636366;">In genuine emergencies, people attempt re-contact within 2–5 minutes. This window is calibrated to separate persistence from panic — mathematically separating noise from signal.</p>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px; background:#2d2d2f;"></div>
+
+<!-- TECH -->
+<section id="tech">
+  <div class="eyebrow reveal">Technical Stack</div>
+  <h2 class="section-title reveal">Lightweight.<br><span class="light">Fully native Android.</span></h2>
+  <p class="section-body reveal">No cloud dependencies. No heavy SDKs. Built entirely on Android's own APIs for maximum efficiency and reliability.</p>
+
+  <div class="tech-list stagger reveal">
+    <div class="tech-item">
+      <span class="tech-icon">🤖</span>
+      <h4>Android Studio + Kotlin</h4>
+      <p>Native development with modern Kotlin for clean, concise code.</p>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">📡</span>
+      <h4>BroadcastReceiver</h4>
+      <p>Intercepts phone state changes at the system level in real time.</p>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">📞</span>
+      <h4>TelephonyManager</h4>
+      <p>Detects RINGING, OFFHOOK, and IDLE call states accurately.</p>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">✉️</span>
+      <h4>SmsManager</h4>
+      <p>Sends automated context messages directly from the device.</p>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">💾</span>
+      <h4>SharedPreferences</h4>
+      <p>Persists mode state across app restarts and device reboots.</p>
+    </div>
+    <div class="tech-item">
+      <span class="tech-icon">🔒</span>
+      <h4>Runtime Permissions</h4>
+      <p>READ_PHONE_STATE, SEND_SMS, MODIFY_AUDIO_SETTINGS handled securely.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- IMPACT -->
+<section id="impact">
+  <div class="eyebrow reveal">Impact</div>
+  <h2 class="section-title reveal">Built for people<br><span class="light">who value their time.</span></h2>
+
+  <div class="stats-row stagger reveal">
+    <div class="stat-box">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Context modes</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Minute urgency window</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Cloud dependencies</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Focus sessions protected</div>
+    </div>
+  </div>
+
+  <div class="user-list stagger reveal" style="margin-top:2.5rem;">
+    <div class="user-item"><span class="ui">🎓</span><span>Students in deep study</span></div>
+    <div class="user-item"><span class="ui">💼</span><span>Professionals in meetings</span></div>
+    <div class="user-item"><span class="ui">🏠</span><span>Remote workers</span></div>
+    <div class="user-item"><span class="ui">🚗</span><span>Drivers on the road</span></div>
+    <div class="user-item"><span class="ui">🧘</span><span>People who need rest</span></div>
+    <div class="user-item"><span class="ui">🔋</span><span>Anyone reclaiming focus</span></div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CONCLUSION -->
+<section id="conclusion">
+  <div class="inner">
+    <div class="eyebrow reveal">CallMode</div>
+
+    <div class="steve-quote reveal">
+      <p>"Simple can be harder than complex. You have to work hard to get your thinking clean to make it simple."</p>
+      <cite>— Steve Jobs</cite>
+    </div>
+
+    <h2 class="reveal">Focus better.<br><span class="light">Miss nothing.</span></h2>
+    <p class="lead reveal">CallMode is a small, elegant idea that solves a real problem millions of people face every single day. It doesn't reinvent the phone — it makes it smarter about when to interrupt you.</p>
+
+    <div class="contact-card reveal">
+      <div class="made-by">Concept & Idea Owner</div>
+      <h3>Katta Koushik Reddy</h3>
+      <p class="tagline">Original idea and system architecture. Open to collaboration, development partnerships, and investment conversations.</p>
+      <div class="contact-links">
+        <a href="mailto:kattak087@gmail.com" class="contact-row">
+          <span class="contact-icon">✉</span>
+          <div class="contact-info">
+            <span class="contact-label">Email</span>
+            <span class="contact-value">kattak087@gmail.com</span>
+          </div>
+        </a>
+        <a href="https://in.linkedin.com/in/kattakoushikreddy" target="_blank" class="contact-row">
+          <span class="contact-icon">in</span>
+          <div class="contact-info">
+            <span class="contact-label">LinkedIn</span>
+            <span class="contact-value">linkedin.com/in/kattakoushikreddy</span>
+          </div>
+        </a>
+        <a href="tel:+918639004645" class="contact-row">
+          <span class="contact-icon">📞</span>
+          <div class="contact-info">
+            <span class="contact-label">Phone</span>
+            <span class="contact-value">+91 8639004645</span>
+          </div>
+        </a>
+      </div>
+      <p class="own-note">© This concept, design, and system architecture is the original work of Katta Koushik Reddy. All rights reserved. Unauthorized reproduction or use without prior written permission is not permitted.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        // stagger children if parent has .stagger
+        if (e.target.classList.contains('stagger')) {
+          [...e.target.children].forEach((child, i) => {
+            setTimeout(() => child.classList.add('in'), i * 80);
+          });
+        }
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
